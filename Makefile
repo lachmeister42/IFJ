@@ -1,22 +1,25 @@
-PROGS=test
-CC=gcc
+PROGS=ifj2018
+CC=@gcc
 CFLAGS=-Wall -std=c99 -pedantic -lm
 
-all: test
+SRCDIR   = src
+OBJDIR   = obj
+BINDIR   = bin
 
-test: binaryTree.o test.o errorHandler.o scanner.o parser.o
-	$(CC) $(CFLAGS) -o $@ *.o
-binaryTree.o: binaryTree.c
-	$(CC) $(CFLAGS) -c binaryTree.c
-treeTest.o: test.c
-	$(CC) $(CFLAGS) -c test.c
-errorHandler.o: errorHandler.c
-	$(CC) $(CFLAGS) -c errorHandler.c
-parser.o: parser.c
-	$(CC) $(CFLAGS) -c parser.c
-scanner.o: scanner.c
-	$(CC) $(CFLAGS) -c scanner.c
+SOURCES  := $(wildcard $(SRCDIR)/*.c)
+INCLUDES := $(wildcard $(SRCDIR)/*.h)
+OBJECTS  := $(SOURCES:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
+$(BINDIR)/$(PROGS): $(OBJECTS)
+	$(CC) $(CFLAGS) $(OBJECTS) -o $@
+$(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.c dirs
+	$(CC) $(CFLAGS) -c $< -o $@
+dirs:
+	@mkdir -p $(SRCDIR)
+	@mkdir -p $(OBJDIR)
+	@mkdir -p $(BINDIR)
 clean:
-	rm -f *.o *.out $(PROGS)
-#
+	rm -f -r $(OBJDIR)
+	rm -f -r $(BINDIR)
+
+

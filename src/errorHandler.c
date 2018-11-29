@@ -1,15 +1,16 @@
-#ifndef errorhandler_c
-#define errorhandler_c
 #include "errorHandler.h"
 
 void errorHandle(EError e){
 	char msg[100];
 	switch (e){
+		case VARIABLE_NOT_ASSIGNED:
+			sprintf(msg,"[Error]: Variable was not assigned\n!");
+			break;
 		case MALLOC_FAILED:
 			sprintf(msg,"[Error]: Couldn't allocate enough memory\n!");
 			break;
 		case CHAR_NOT_EXPECTED:
-			sprintf(msg,"[Error]: Char was not expected at this time %c\n", lastChar->c);
+			sprintf(msg,"[Error]: Char was not expected at this time \n");
 			break;
 		
 		default:
@@ -20,4 +21,3 @@ void errorHandle(EError e){
 	fflush(stderr);
 	exit(3);
 }
-#endif
